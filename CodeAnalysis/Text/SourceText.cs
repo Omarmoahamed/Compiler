@@ -29,7 +29,10 @@ namespace Memo_Compiler.CodeAnalysis.Text
             ReadOnlySpan<char> textsp = this.text.AsSpan(start,length);
             return textsp;
         }
-
+        public ReadOnlyMemory<char> TextAsMemory(int start,int length) 
+        {
+            return text.AsMemory(start,length);
+        }
         public string ToString2(int start, int length) 
         {
            return this.text.Substring(start, length);

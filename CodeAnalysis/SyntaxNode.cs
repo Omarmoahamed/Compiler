@@ -11,7 +11,7 @@ namespace Memo_Compiler.CodeAnalysis
     {
         public int position ;
         public SyntaxKind kind ;
-        public string value;
+        public Memory<char> value;
 
     }
 }

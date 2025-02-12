@@ -10,7 +10,7 @@ namespace Memo_Compiler.CodeAnalysis
     {
         
         private readonly List<Diagnostic> _diagnostics = new();
-        
+       
             
         public DiagnosticsBag() { }
 
@@ -30,7 +30,11 @@ namespace Memo_Compiler.CodeAnalysis
             var message = $"The string is invalid in line {line}";
             ReportError(line, message);
         }
-
+        public void UnterminatedString(int line) 
+        {
+            var message = $"There is a still Unterminated string in line {line}";
+            ReportError(line, message);
+        }
         public void BadCharacter(int line, char character) 
         {
             var message = $"The character {character} is not defined in line {line}";

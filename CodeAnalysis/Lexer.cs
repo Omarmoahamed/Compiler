@@ -18,6 +18,10 @@ namespace Memo_Compiler.CodeAnalysis
         private SourceText text;
         private object? value;
         
+        public Lexer(SourceText text) 
+        {
+            this.text = text; 
+        }
         private char Current => Peek(0);
 
         private char Next => Peek(1);
@@ -35,8 +39,9 @@ namespace Memo_Compiler.CodeAnalysis
         {
            start = position;
             ScanToken();
-            int lenght = position - start;  
-            return new SyntaxToken(kind,value,position-1,text.ToString2(start,lenght));
+            int length = position - start;  
+            
+                        return new SyntaxToken(kind,value,position-1,text.TextAsMemory(start,length));
         }
 
 
@@ -167,8 +172,10 @@ namespace Memo_Compiler.CodeAnalysis
                         }
 
                     case '"' when Peek(1)=='"':
-                        sb.Append(Current);
+                        
+                        
                         position += 2;
+                        diagnosticsBag.UnterminatedString(text.GetIndex(position));
                         end = false;
                         break;
 
@@ -180,13 +187,13 @@ namespace Memo_Compiler.CodeAnalysis
                     default:
                         sb.Append(Current);
                         position++;
-                        end= false;
+                        
                         break;
 
 
                 }
                 kind = SyntaxKind.StringToken;             
-                sb.ToString();
+               value = sb.ToString();
             }
 
             

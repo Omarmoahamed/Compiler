@@ -54,7 +54,27 @@ namespace Memo_Compiler.CodeAnalysis
         FalseKeyword,
 
         
-        BadToken
+        BadToken,
+
+            //Expression
+
+        BinaryExpression,
+        UnaryExpression,
+        AssigmentExpression,
+        LiteralExpression,
+        ParaenthesisiExpression,
+        CallExpression,
+        LogicalExpression,
+
+
+            //Statement
+
+            IfStatement,
+            WhileStatement,
+            ForStatement,
+            ElseStatement,
+            BreakStatement,
+            FunctionStatement
 
 
     }
