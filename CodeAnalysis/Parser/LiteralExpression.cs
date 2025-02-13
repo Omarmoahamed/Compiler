@@ -15,15 +15,15 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             this.LiteralToken = syntaxToken;
             this.value = value;
         }
-
+        public override T accept<T>(Visitor<T> visitor)
+        {
+            return visitor.VisitLiteralExpres(this);
+        }
         public SyntaxKind NodeKind => SyntaxKind.LiteralExpression;
 
         public SyntaxToken LiteralToken { get; }
 
         public object? value { get; }
-        public override T accept<T>(Visitor<T> visitor)
-        {
-            return visitor.visitLiteralExpres(this);
-        }
+       
     }
 }

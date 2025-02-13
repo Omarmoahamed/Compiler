@@ -16,7 +16,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
         }
         public override T accept<T>(Visitor<T> visitor)
         {
-            return visitor.visitAssigmentExpres(this);
+            return visitor.VisitAssigmentExpres(this);
         }
         public SyntaxKind NodeToken => SyntaxKind.AssigmentExpression;
         public SyntaxToken IdentifierToken { get; }

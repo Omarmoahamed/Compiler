@@ -9,13 +9,24 @@ namespace Memo_Compiler.CodeAnalysis
 {
     internal interface Visitor<T> 
     {
-        T visitAssigmentExpres(AssigmentExpression Expres);
+        T VisitAssigmentExpres(AssigmentExpression Expres);
 
         T VisitBinaryExpres(BinaryExpression Binary);
-        T visitCallExpres(CallExpression Expres);
-        T visitLiteralExpres(LiteralExpression Expres);
-        T visitParaenthesisExpres(ParaenthesisExpression Expres);
-        T visitUnaryExpres(UnaryExpression Expres);
+        T VisitCallExpres(CallExpression Expres);
+        T VisitLiteralExpres(LiteralExpression Expres);
+        T VisitParaenthesisExpres(ParaenthesisExpression Expres);
+        T VisitUnaryExpres(UnaryExpression Expres);
 
+        T VisitBlockStatement(BlockStatement Block);
+
+        T VisitElseStatement(ElseStatement ElseStmt);
+
+        T VisitIfStatement(IfStatement IfStmt);
+
+        T VisitWhileStatement(WhileStatement WhileStmt);
+
+        T DoWhileStatement(DoWhileStatement DoWhileStmt);
+
+        T VisitFunctionStatement(FunctionDeclerationStatement FunctionStmt);
     }
 }

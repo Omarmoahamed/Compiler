@@ -64,17 +64,20 @@ namespace Memo_Compiler.CodeAnalysis
         LiteralExpression,
         ParaenthesisiExpression,
         CallExpression,
-        LogicalExpression,
+      
 
 
             //Statement
 
             IfStatement,
             WhileStatement,
+            DoWhileStatement,
             ForStatement,
-            ElseStatement,
+            ElseClause, // else here is not statement due to because it cannot stand alone and has no condition 
             BreakStatement,
-            FunctionStatement
+            FunctionStatement,
+            BlockStatement, // block here is statement because it can stand alone that group statements 
+            ElseStatement // elsestatement here wraps over elseclause and block statement
 
 
     }
