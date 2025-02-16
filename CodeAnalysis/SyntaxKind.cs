@@ -52,6 +52,7 @@ namespace Memo_Compiler.CodeAnalysis
         FunctionKeyword,
         TrueKeyword,
         FalseKeyword,
+        NumberKeyword,
 
         
         BadToken,
@@ -77,8 +78,11 @@ namespace Memo_Compiler.CodeAnalysis
             BreakStatement,
             FunctionStatement,
             BlockStatement, // block here is statement because it can stand alone that group statements 
-            ElseStatement // elsestatement here wraps over elseclause and block statement
+            ElseStatement, // elsestatement here wraps over elseclause and block statement
+            LocalVariableDeclerationStatement,
+            //variable decleration
 
-
+            VariavleDecleration,
+            VariableDeclerator
     }
 }

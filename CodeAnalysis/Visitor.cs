@@ -28,5 +28,6 @@ namespace Memo_Compiler.CodeAnalysis
         T DoWhileStatement(DoWhileStatement DoWhileStmt);
 
         T VisitFunctionStatement(FunctionDeclerationStatement FunctionStmt);
+        T VisitLocalDeclarationStatemenrt(LocalVariableDeclerationStatement LocalDeclerationStmt);
     }
 }

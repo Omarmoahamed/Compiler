@@ -30,6 +30,9 @@ namespace Memo_Compiler.CodeAnalysis
                 case "let":
                     return SyntaxKind.LetKeyword;
 
+                case "Number":
+                    return SyntaxKind.NumberKeyword;
+
                 case "function":
                     return SyntaxKind.FunctionKeyword;
 

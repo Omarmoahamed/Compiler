@@ -11,7 +11,7 @@ namespace Memo_Compiler.CodeAnalysis
     internal class Lexer
     {
         private int position;
-
+        
         private int start;
         private SyntaxKind kind;
         private DiagnosticsBag diagnosticsBag = new DiagnosticsBag();
