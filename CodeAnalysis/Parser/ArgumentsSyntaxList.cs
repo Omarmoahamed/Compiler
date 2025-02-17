@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Net.Sockets;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             this.Arguments = Aguments;
         }
 
-
+       
         public ImmutableArray<T> Arguments { get; }
 
         public T this[int index] => Arguments[index*2];
@@ -35,15 +36,58 @@ namespace Memo_Compiler.CodeAnalysis.Parser
         // it works here due to it return object under the hood of yield 
         public  IEnumerator<T> GetEnumerator() 
         {
-            for (int i = 0; i < this.Length; i++) 
-            {
-                yield return this.Arguments[i];
-            }
+           return new Enumerator(this.Arguments);
         }
 
         IEnumerator IEnumerable.GetEnumerator() 
         {
             return GetEnumerator();
         }
+
+
+
+
+        internal struct Enumerator : IEnumerator<T>
+        {
+          
+            public ImmutableArray<T> list;
+            public T _current;
+            public T Current => _current;
+            public int position;
+            public Enumerator(ImmutableArray<T> list)
+            {
+                this.list = list;
+                this.position = 0;
+                this._current = list[position];
+            }
+
+            T IEnumerator<T>.Current => _current ;
+
+            object IEnumerator.Current => Current;
+
+            public void Dispose()
+            {
+                
+            }
+
+            public bool MoveNext()
+            {
+                if(position >= list.Length) 
+                {
+                   
+                    return false;
+                }
+                _current = list[position];
+                position++;
+                return true;
+            }
+
+            public void Reset()
+            {
+               position = 0;
+            }
+        }
     }
+
+   
 }
