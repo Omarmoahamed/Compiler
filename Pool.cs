@@ -21,7 +21,9 @@ namespace Memo_Compiler
         private readonly int minimum = 8;
         private  int count;  
         private int length;
-        public T[] PooledArray;
+        private T[] PooledArray;
+        public T[] _PooledArray => this.PooledArray;
+
 
 
        
@@ -49,13 +51,14 @@ namespace Memo_Compiler
         {
             var temp = this.A_pool.Rent(arraylength * 2);
             Array.Copy(PooledArray, temp, count);
-            this.ReturnArr();
+            this.A_pool.Return(PooledArray, true);
             PooledArray = temp;
         }
 
         public void ReturnArr() 
         {
             this.A_pool.Return(PooledArray,true);
+            count = 0;
         }
     }
 }
