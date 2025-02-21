@@ -14,7 +14,9 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public SourceText sourceText;
 
-        private ImmutableArray<SyntaxToken> tokens;
+        private DiagnosticsBag diagnosticsBag = new DiagnosticsBag();
+
+        private ImmutableArray<BaseSyntax> tokens;
 
         private SyntaxToken current => Peek(0);
         public SyntaxToken next => Peek(1);
@@ -28,7 +30,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
                 return new SyntaxToken(SyntaxKind.EndOfFileToken, '\n',tokens.Length, null);
             }
             Position = pos;
-            return tokens[pos];
+            return (SyntaxToken)tokens[pos];
         }
         public Parser(SourceText sourceText) 
         {
@@ -36,15 +38,19 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             Position = 0;
             Lexer lex = new Lexer(sourceText);
             SyntaxToken currtoken;
-            var temparr = ImmutableArray.CreateBuilder<SyntaxToken>();
+            var temparr = pool.PoolRent(16);
             do
             {
                 currtoken = lex.Lex();   
                
-                temparr.Add(currtoken);
+                pool.Add(currtoken);
             } 
             while (currtoken.kind != SyntaxKind.EndOfFileToken);
-            this.tokens = temparr.ToImmutableArray<SyntaxToken>();
+            this.tokens = ImmutableArray.ToImmutableArray(temparr);
+            pool.ReturnArr();
         }
+
+
+
     }
 }

@@ -13,8 +13,7 @@ namespace Memo_Compiler
     {
         public Pool() 
         {
-            this.PooledArray = this.A_pool.Rent(minimum);
-            this.length = this.PooledArray.Length;
+           
             this.count = 0;
         }
         private readonly ArrayPool<T> A_pool = ArrayPool<T>.Create();
@@ -22,6 +21,8 @@ namespace Memo_Compiler
         private  int count;  
         private int length;
         private T[] PooledArray;
+        private Stack<(int count, int lenght, T[] arr)> ArrPropStack = new Stack<(int count, int lenght, T[] arr)>();
+
         public T[] _PooledArray => this.PooledArray;
 
 
@@ -30,7 +31,15 @@ namespace Memo_Compiler
 
        public T[] PoolRent(int minimum) 
         {
-            return A_pool.Rent(minimum);
+            if (PooledArray is not null && ArrPropStack.Count >= 0)
+            {
+                this.ArrPropStack.Push((count, length, PooledArray));
+            }
+            PooledArray = A_pool.Rent(minimum);
+
+            this.length = PooledArray.Length;
+            return PooledArray;
+
         }
 
         public void Add(T item) 
@@ -44,6 +53,7 @@ namespace Memo_Compiler
 
             Expand(length);
             PooledArray[count] = item;
+            count++;
 
         }
 
@@ -53,12 +63,25 @@ namespace Memo_Compiler
             Array.Copy(PooledArray, temp, count);
             this.A_pool.Return(PooledArray, true);
             PooledArray = temp;
+            length = PooledArray.Length;
         }
 
         public void ReturnArr() 
         {
-            this.A_pool.Return(PooledArray,true);
-            count = 0;
+            if (this.ArrPropStack.Count > 0)
+            {
+                this.A_pool.Return(PooledArray, false);
+                var temp = this.ArrPropStack.Pop();
+                this.PooledArray = temp.arr;
+                this.length = temp.lenght;
+                this.count = temp.count;
+            }
+            else
+            {
+                this.A_pool.Return(PooledArray, false);
+                PooledArray = null;
+                length = 0;
+            }
         }
     }
 }
