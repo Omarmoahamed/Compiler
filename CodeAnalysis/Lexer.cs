@@ -58,6 +58,14 @@ namespace Memo_Compiler.CodeAnalysis
         {
             switch (Current) 
             {
+                case ';':
+                    position++;
+                    kind = SyntaxKind.SemiColonToken;
+                    break;
+                case ',':
+                    position++;
+                    kind = SyntaxKind.SingleComma;
+                    break;
                 case '{':
                     position++;
                     kind= SyntaxKind.OpenCurlyBrackets;

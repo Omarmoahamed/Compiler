@@ -59,13 +59,24 @@ namespace Memo_Compiler
 
         private void Expand(int arraylength) 
         {
-            var temp = this.A_pool.Rent(arraylength * 2);
-            Array.Copy(PooledArray, temp, count);
-            this.A_pool.Return(PooledArray, true);
+            var temp = this.ExpandRent(length*2);
+            
+            this.ExpandReturn();
             PooledArray = temp;
             length = PooledArray.Length;
         }
 
+        private T[] ExpandRent(int lenght) 
+        {
+            var temp = this.A_pool.Rent(lenght);
+            Array.Copy (PooledArray, temp, lenght);
+            return temp;
+        }
+        private void ExpandReturn() 
+        {
+            this.A_pool.Return(PooledArray, true);
+
+        }
         public void ReturnArr() 
         {
             if (this.ArrPropStack.Count > 0)

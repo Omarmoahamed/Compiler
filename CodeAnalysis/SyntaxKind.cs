@@ -65,7 +65,7 @@ namespace Memo_Compiler.CodeAnalysis
         LiteralExpression,
         ParaenthesisiExpression,
         CallExpression,
-      
+        NameExpression,
 
 
             //Statement

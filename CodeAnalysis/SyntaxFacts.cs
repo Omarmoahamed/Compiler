@@ -8,6 +8,30 @@ namespace Memo_Compiler.CodeAnalysis
 {
     internal static class SyntaxFacts
     {
+        public static byte OperatorPrecedence(SyntaxKind kind) 
+        {
+            switch (kind) 
+            {
+                case SyntaxKind.PlusToken:
+                case SyntaxKind.MinusToken:
+                    return 2;
+
+                case SyntaxKind.StarToken:
+                case SyntaxKind.SlashToken:
+                    return 3;
+
+
+                case SyntaxKind.EqualEqualToken:
+                case SyntaxKind.NotEqualToken:
+                case SyntaxKind.SmallerThanToken:
+                case SyntaxKind.SmallerOrEqualToken:
+                case SyntaxKind.BiggerThanToken:
+                case SyntaxKind.BiggerOrEqualToken:
+                    return 1;
+
+                default: return 0;
+            }
+        }
         public static SyntaxKind IdentifierOrKeyword(string word) 
         {
             switch (word) 

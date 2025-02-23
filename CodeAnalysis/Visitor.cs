@@ -16,6 +16,8 @@ namespace Memo_Compiler.CodeAnalysis
         T VisitLiteralExpres(LiteralExpression Expres);
         T VisitParaenthesisExpres(ParaenthesisExpression Expres);
         T VisitUnaryExpres(UnaryExpression Expres);
+        T VisitNameExpres(NameExpression Expres);
+       
 
         T VisitBlockStatement(BlockStatement Block);
 
