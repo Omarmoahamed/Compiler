@@ -87,9 +87,51 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         }
 
+        private Statement ParseStatement() 
+        {
+
+        }
         private Expres ParseExpression() 
         {
 
+        }
+
+        private Statement ParseFunctionDeclaration() 
+        {
+            var function = this.MatchToken(SyntaxKind.FunctionKeyword);
+            var ReturnType = this.MatchToken(SyntaxKind.IdentifierToken);
+            var OpenParenthesis = this.MatchToken(SyntaxKind.OpenParanthesis);
+            var Parameters = this.ParseParameters();
+            var ClosedParaenthesis = this.MatchToken(SyntaxKind.ClosedParanthesis);
+            var BlockStmt = (BlockStatement) this.ParseBlockStmt();
+            if (current.kind == SyntaxKind.ReturnKeyword) 
+            {
+
+            }
+
+            return new FunctionDeclerationStatement(function, null, OpenParenthesis, Parameters, ClosedParaenthesis, BlockStmt);
+
+        }
+
+        private Statement ParseBlockStmt() 
+        {
+            var Opencurly = this.MatchToken(SyntaxKind.OpenCurlyBrackets);
+            var Body = this.ParseBlockBody();
+            var Clusedcurly = this.MatchToken(SyntaxKind.ClosedCurlyBrackets);
+            return new BlockStatement(Opencurly,Body,Clusedcurly);
+        }
+        private ImmutableArray<BaseSyntax> ParseBlockBody() 
+        {
+            var temp = pool.PoolRent(16);
+            while(current.kind == SyntaxKind.EndOfFileToken || current.kind== SyntaxKind.ClosedCurlyBrackets) 
+            {
+                var stmt = this.ParseStatement();
+
+                pool.Add(stmt);
+            }
+            var arr = ImmutableArray.Create(temp);
+            pool.ReturnArr();
+            return arr;
         }
         private Expres ParseBinaryExpression(byte parentprocedence =0) 
         {
@@ -121,13 +163,48 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
             return left;
         }
+
+        private Expres Term() 
+        {
+            var left = this.Factor();
+
+            while (this.current.kind == SyntaxKind.PlusToken || this.current.kind == SyntaxKind.MinusToken)  
+            {
+                var Operator = this.Advance();
+                var right = this.Factor();
+                left = new BinaryExpression(left, Operator, right);
+
+            }
+            return left;
+        }
+        private Expres Factor() 
+        {
+            var left = this.ParseUnaryExpression();
+
+            while(this.current.kind == SyntaxKind.StarToken || this.current.kind == SyntaxKind.SlashToken) 
+            {
+                var Operator = this.Advance();
+                var right = this.ParseUnaryExpression();
+                left = new BinaryExpression(left,Operator, right);
+            }
+            return left;
+            
+        }
+
         private Expres ParseUnaryExpression() 
         {
-            var OperatorKind = current.kind == SyntaxKind.MinusToken ? SyntaxKind.MinusToken : SyntaxKind.PlusToken;
-            var Operator = this.MatchToken(OperatorKind);
-            var Expres = this.ParseBinaryExpression();
+            if (current.kind == SyntaxKind.MinusToken || current.kind == SyntaxKind.ExclamationToken)
+            {
+                var OperatorKind = current.kind == SyntaxKind.MinusToken ? SyntaxKind.MinusToken : SyntaxKind.PlusToken;
+                var Operator = this.MatchToken(OperatorKind);
+                var Expres = this.ParseBinaryExpression();
 
-            return new UnaryExpression(Operator, Expres);
+                return new UnaryExpression(Operator, Expres);
+            }
+            else 
+            {
+                return this.ParsePrimaryExpression();
+            }
 
         }
         private Expres ParsePrimaryExpression() 
@@ -184,6 +261,49 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             var arr = ImmutableArray.ToImmutableArray(temp);
             pool.ReturnArr();
             return arr;
+        }
+
+        private ImmutableArray<BaseSyntax> ParseParameters() 
+        {
+            var temp =pool.PoolRent(8);
+            var Continue = true;
+            while (Continue ||current.kind == SyntaxKind.EndOfFileToken || current.kind == SyntaxKind.ClosedParanthesis) 
+            {
+                var param = this.ParseParam();
+                pool.Add(param);
+                if (current.kind == SyntaxKind.SingleComma) 
+                {
+                    pool.Add(param);
+                }
+
+                else 
+                {
+                   Continue = false;
+                }
+
+            }
+
+            var arr = ImmutableArray.ToImmutableArray(temp);
+            pool.ReturnArr();
+            return arr;
+
+        }
+
+
+        private BaseSyntax ParseParam() 
+        {
+            if (current.kind == SyntaxKind.StringKeyword || current.kind == SyntaxKind.NumberKeyword)
+            {
+                var parametertype = this.Advance();
+                var param = this.MatchToken(SyntaxKind.IdentifierToken);
+                return new ParamSyntax(parametertype, param);
+            }
+            else 
+            {
+                var parametertype = this.MatchToken(SyntaxKind.VoidKeyword);
+                var param = this.MatchToken(SyntaxKind.IdentifierToken);
+                return new ParamSyntax(parametertype, param);
+            }
         }
         private Expres ParseOpenParaenthesis() 
         {

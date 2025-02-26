@@ -54,7 +54,7 @@ namespace Memo_Compiler.CodeAnalysis
                 case "let":
                     return SyntaxKind.LetKeyword;
 
-                case "Number":
+                case "number":
                     return SyntaxKind.NumberKeyword;
 
                 case "function":
@@ -68,6 +68,10 @@ namespace Memo_Compiler.CodeAnalysis
 
                  case "false":
                     return SyntaxKind.FalseKeyword;
+                case "string":
+                    return SyntaxKind.StringKeyword;
+                case "void":
+                    return SyntaxKind.VoidKeyword;
 
                 default:
                     return SyntaxKind.IdentifierToken;

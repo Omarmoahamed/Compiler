@@ -23,6 +23,7 @@ namespace Memo_Compiler.CodeAnalysis
         MinusEqualToken,
         MinusToken,
         PlusToken,
+        ExclamationToken,
         StarToken,
         SlashToken,
         BiggerThanToken,
@@ -53,6 +54,8 @@ namespace Memo_Compiler.CodeAnalysis
         TrueKeyword,
         FalseKeyword,
         NumberKeyword,
+        StringKeyword,
+        VoidKeyword,
 
         
         BadToken,
@@ -83,6 +86,9 @@ namespace Memo_Compiler.CodeAnalysis
             //variable decleration
 
             VariavleDecleration,
-            VariableDeclerator
+            VariableDeclerator,
+
+            ParamSyntax,
+            ReturnType
     }
 }

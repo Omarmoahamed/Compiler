@@ -98,10 +98,15 @@ namespace Memo_Compiler.CodeAnalysis
                     position++;
                     kind = SyntaxKind.EqualToken;
                     break;
-
+                    
                 case '!' when Peek(1) == '=':
                     position += 2;
                     kind= SyntaxKind.NotEqualToken;
+                    break;
+
+                case '!':
+                    position++;
+                    kind = SyntaxKind.ExclamationToken;
                     break;
                 case '>':
                     if (Peek(1) == '=') 

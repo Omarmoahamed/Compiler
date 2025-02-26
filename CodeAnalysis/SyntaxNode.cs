@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Memo_Compiler.CodeAnalysis
 {
-    public abstract class SyntaxNode
+     abstract class SyntaxNode 
     {
         public int position ;
         public SyntaxKind kind ;
         public Memory<char> value;
-
+        public abstract T accept<T>(Visitor<T> visitor);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,14 @@ namespace Memo_Compiler.CodeAnalysis.Parser
         public FunctionDeclerationStatement(SyntaxToken FunctionKeyword, 
             SyntaxToken ReturnToken,
             SyntaxToken OpenParaethensisToken,
-            ArgumentsSyntaxList<BaseSyntax> Arguments,
+            ImmutableArray<BaseSyntax> Parameters,
             SyntaxToken ClosedParaenthesisToken,
             BlockStatement FunctionBody) 
         {
             this.FunctionKeyword = FunctionKeyword;
             this.ReturnToken = ReturnToken;
             this.OpenParaethesisToken = OpenParaethensisToken;
-            this.Arguments = Arguments;
+            this.Arguments = new ArgumentsSyntaxList<BaseSyntax>(Parameters);
             this.ClosedParaenthesisToken = ClosedParaenthesisToken;
             this.FunctionBody = FunctionBody;
         }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Memo_Compiler.CodeAnalysis
 {
-    internal abstract class Expres : BaseSyntax
+    internal abstract class Expres : SyntaxNode, BaseSyntax
     {
-        public abstract T accept<T>(Visitor<T> visitor);
+       
     }
 }
