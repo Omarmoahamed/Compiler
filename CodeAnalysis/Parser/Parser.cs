@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -104,12 +105,9 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             var Parameters = this.ParseParameters();
             var ClosedParaenthesis = this.MatchToken(SyntaxKind.ClosedParanthesis);
             var BlockStmt = (BlockStatement) this.ParseBlockStmt();
-            if (current.kind == SyntaxKind.ReturnKeyword) 
-            {
+           
 
-            }
-
-            return new FunctionDeclerationStatement(function, null, OpenParenthesis, Parameters, ClosedParaenthesis, BlockStmt);
+            return new FunctionDeclerationStatement(function, ReturnType, OpenParenthesis, Parameters, ClosedParaenthesis, BlockStmt);
 
         }
 
@@ -163,12 +161,24 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
             return left;
         }
+        private Expres Parseterm()
+        {
+            var left = this.Term();
+            while (this.current.kind == SyntaxKind.AmpersandAmpersandToken || this.current.kind == SyntaxKind.PipePipeToken)
+            {
+                var Operator = this.Advance();
+                var right = this.Term();
+                left = new BinaryExpression(left, Operator, right);
+            }
 
+
+            return left;
+        }
         private Expres Term() 
         {
             var left = this.Factor();
 
-            while (this.current.kind == SyntaxKind.PlusToken || this.current.kind == SyntaxKind.MinusToken)  
+            while (SyntaxFacts.OperatorPrecedence(this.current.kind) == 4 || SyntaxFacts.OperatorPrecedence(this.current.kind)==1)  
             {
                 var Operator = this.Advance();
                 var right = this.Factor();
@@ -177,11 +187,13 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             }
             return left;
         }
+
+        
         private Expres Factor() 
         {
             var left = this.ParseUnaryExpression();
-
-            while(this.current.kind == SyntaxKind.StarToken || this.current.kind == SyntaxKind.SlashToken) 
+          
+            while(SyntaxFacts.OperatorPrecedence(this.current.kind)==5 )
             {
                 var Operator = this.Advance();
                 var right = this.ParseUnaryExpression();
@@ -190,7 +202,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             return left;
             
         }
-
+       
         private Expres ParseUnaryExpression() 
         {
             if (current.kind == SyntaxKind.MinusToken || current.kind == SyntaxKind.ExclamationToken)

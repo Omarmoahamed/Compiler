@@ -38,6 +38,8 @@ namespace Memo_Compiler.CodeAnalysis
         IdentifierToken,
         OrToken,
         AndToken,
+        PipePipeToken,
+        AmpersandAmpersandToken,
 
         //KeyWords
 
@@ -83,6 +85,7 @@ namespace Memo_Compiler.CodeAnalysis
             BlockStatement, // block here is statement because it can stand alone that group statements 
             ElseStatement, // elsestatement here wraps over elseclause and block statement
             LocalVariableDeclerationStatement,
+            ReturnStatement,
             //variable decleration
 
             VariavleDecleration,

@@ -20,7 +20,7 @@ namespace Memo_Compiler.CodeAnalysis
        
 
         T VisitBlockStatement(BlockStatement Block);
-
+        T VisitReturnStatement(ReturnStatement ReturnStatement);
         T VisitElseStatement(ElseStatement ElseStmt);
 
         T VisitIfStatement(IfStatement IfStmt);

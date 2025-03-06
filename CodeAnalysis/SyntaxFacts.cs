@@ -14,12 +14,17 @@ namespace Memo_Compiler.CodeAnalysis
             {
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
-                    return 2;
+                    return 4;
 
                 case SyntaxKind.StarToken:
                 case SyntaxKind.SlashToken:
-                    return 3;
+                    return 5;
 
+                    case SyntaxKind.PipePipeToken:
+                    return 2;
+
+                    case SyntaxKind.AmpersandAmpersandToken:
+                    return 3;
 
                 case SyntaxKind.EqualEqualToken:
                 case SyntaxKind.NotEqualToken:
