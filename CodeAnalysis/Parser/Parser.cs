@@ -164,7 +164,9 @@ namespace Memo_Compiler.CodeAnalysis.Parser
         private Expres Parseterm()
         {
             var left = this.Term();
-            while (this.current.kind == SyntaxKind.AmpersandAmpersandToken || this.current.kind == SyntaxKind.PipePipeToken)
+            while (this.current.kind == SyntaxKind.AmpersandAmpersandToken || 
+                this.current.kind == SyntaxKind.PipePipeToken 
+             || SyntaxFacts.OperatorPrecedence(this.current.kind) == 1)
             {
                 var Operator = this.Advance();
                 var right = this.Term();
@@ -178,7 +180,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
         {
             var left = this.Factor();
 
-            while (SyntaxFacts.OperatorPrecedence(this.current.kind) == 4 || SyntaxFacts.OperatorPrecedence(this.current.kind)==1)  
+            while (SyntaxFacts.OperatorPrecedence(this.current.kind) == 4 )  
             {
                 var Operator = this.Advance();
                 var right = this.Factor();
