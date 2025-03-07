@@ -11,7 +11,7 @@ namespace Memo_Compiler.CodeAnalysis
     internal class Lexer
     {
         private int position;
-        
+       
         private int start;
         private SyntaxKind kind;
         private DiagnosticsBag diagnosticsBag = new DiagnosticsBag();
@@ -56,6 +56,7 @@ namespace Memo_Compiler.CodeAnalysis
 
         public void ScanToken() 
         {
+            value = null;
             switch (Current) 
             {
                 case ';':
@@ -90,7 +91,7 @@ namespace Memo_Compiler.CodeAnalysis
                     String();
                     break;
                 case'=' when Peek(1) == '=':
-                    position++;
+                    position+=2;
                     kind = SyntaxKind.EqualEqualToken;
                     break;
 

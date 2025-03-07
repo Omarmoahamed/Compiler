@@ -8,10 +8,10 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 {
     internal class ElseStatement : Statement
     {
-        public ElseStatement(ElseClause elseClause, SyntaxToken openParaenthesis, BlockStatement blockStatement)
+        public ElseStatement(ElseClause elseClause,  BlockStatement blockStatement)
         {
             ElseClause = elseClause;
-            OpenParaenthesis = openParaenthesis;
+            
             BlockStatement = blockStatement;
         }
 
@@ -22,7 +22,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public ElseClause ElseClause { get; }
 
-        public SyntaxToken OpenParaenthesis { get; }
+        
 
         public BlockStatement BlockStatement { get; }
     }

@@ -88,15 +88,116 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         }
 
-        private Statement ParseStatement() 
+        private BaseSyntax ParseStatement() 
         {
+            switch (this.current.kind) 
+            {
+                case SyntaxKind.OpenCurlyBrackets:
+                    return ParseBlockStmt();
+                case SyntaxKind.FunctionKeyword:
+                    return ParseFunctionDeclaration();
+                case SyntaxKind.ReturnKeyword:
+                    return ParseReturnStatement();
+                case SyntaxKind.IfKeyword:
+                    return ParseIfStatement();
+                case SyntaxKind.WhileKeyword:
+                    return ParseWhileStatement();
+                case SyntaxKind.DoKeyword:
+                   return ParseDoWhileStatement();
+               
+                    default:
+                   return ParseAssigmentExpression();
+                
 
+            }
+
+        }
+
+        private Statement ParseWhileStatement() 
+        {
+            var WhileKeyword = this.MatchToken(SyntaxKind.WhileKeyword);
+            var OpenParaenthesis = this.MatchToken(SyntaxKind.OpenParanthesis);
+            var condition = ParseAssigmentExpression();
+            var ClosedParaenthesis = this.MatchToken(SyntaxKind.ClosedParanthesis);
+            var Block = ParseBlockStmt();
+            return new WhileStatement(WhileKeyword, OpenParaenthesis, condition, ClosedParaenthesis, Block);
+        }
+        private Statement ParseDoWhileStatement() 
+        {
+            var DoKeyword = this.MatchToken(SyntaxKind.DoKeyword);
+            var Block = this.ParseBlockStmt();
+            var WhileKeyword = this.MatchToken(SyntaxKind.WhileKeyword);
+            var OpenParaenthesis = this.MatchToken(SyntaxKind.OpenParanthesis);
+            var condition = ParseAssigmentExpression();
+            var ClosedParaenthesis = this.MatchToken(SyntaxKind.ClosedParanthesis);
+
+            return new DoWhileStatement(DoKeyword, Block, WhileKeyword, OpenParaenthesis, condition,ClosedParaenthesis);
+        }
+        private Statement ParseForStatement() 
+        {
+            var ForKeyword = this.MatchToken(SyntaxKind.ForKeyword);
+            var Identifier = this.MatchToken(SyntaxKind.IdentifierToken);
+            var Equal = this.MatchToken(SyntaxKind.EqualToken);
+            var LowerBound = ParseAssigmentExpression();
+            var UntilKeyword = this.MatchToken(SyntaxKind.UntilKeyword);
+            var UpperBound = ParseAssigmentExpression();
+            var Block = ParseBlockStmt();
+
+            return new ForStatement(ForKeyword,Identifier, Equal, LowerBound, UntilKeyword,UpperBound,Block);
+        }
+        private Statement ParseIfStatement() 
+        {
+            var Keyword = this.MatchToken(SyntaxKind.IfKeyword);
+            var OpenParanthesis = this.MatchToken(SyntaxKind.OpenParanthesis);
+            var Expres = ParseAssigmentExpression();
+            var ClosedParanthesis = this.MatchToken(SyntaxKind.ClosedParanthesis);
+            var Block =  (BlockStatement)ParseBlockStmt();
+            if (current.kind == SyntaxKind.ElseKeyword) 
+            {
+                var Else =(ElseStatement) ParseElseStatement();
+                return new IfStatement(Keyword, OpenParanthesis, Expres, ClosedParanthesis, Block, Else);
+            }
+
+            return new IfStatement(Keyword, OpenParanthesis, Expres, ClosedParanthesis, Block);
+        }
+        private Statement ParseElseStatement() 
+        {
+            var Else = this.ParseElseClause();
+            var Block = (BlockStatement)ParseBlockStmt();
+            return new ElseStatement(Else, Block);
+        }
+
+        private ElseClause ParseElseClause() 
+        {
+            var ElseKeyword = this.MatchToken(SyntaxKind.ElseKeyword);
+            return new ElseClause(ElseKeyword);
         }
         private Expres ParseExpression() 
         {
-
+            return ParseAssigmentExpression();
         }
+        private Expres ParseAssigmentExpression() 
+        {
+            if (current.kind == SyntaxKind.IdentifierToken)
+            {
+              
+                switch (Peek(1).kind)
+                {
+                    case SyntaxKind.EqualToken:
+                    case SyntaxKind.PluseEqualToken:
+                    case SyntaxKind.MinusEqualToken:
+                    case SyntaxKind.StarEqualToken:
+                    case SyntaxKind.SlashEqualToken:
 
+                        var identifier = this.MatchToken(SyntaxKind.IdentifierToken);
+                        var Operator = this.Advance();
+                        var expres = this.ParseExpres();
+                        return new AssigmentExpression(identifier, Operator, expres);
+
+                }
+            }
+            return ParseExpres();
+        }
         private Statement ParseFunctionDeclaration() 
         {
             var function = this.MatchToken(SyntaxKind.FunctionKeyword);
@@ -117,6 +218,14 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             var Body = this.ParseBlockBody();
             var Clusedcurly = this.MatchToken(SyntaxKind.ClosedCurlyBrackets);
             return new BlockStatement(Opencurly,Body,Clusedcurly);
+        }
+
+        private Statement ParseReturnStatement() 
+        {
+            var ReturnKeyword = this.MatchToken(SyntaxKind.ReturnKeyword);
+            var Expres = this.ParseAssigmentExpression();
+            
+            return new ReturnStatement(ReturnKeyword, Expres);
         }
         private ImmutableArray<BaseSyntax> ParseBlockBody() 
         {
@@ -161,20 +270,33 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
             return left;
         }
-        private Expres Parseterm()
+
+
+        private Expres ParseExpres()
         {
-            var left = this.Term();
-            while (this.current.kind == SyntaxKind.AmpersandAmpersandToken || 
-                this.current.kind == SyntaxKind.PipePipeToken 
+            var left = this.ParseExpresAnd();
+            while (this.current.kind == SyntaxKind.PipePipeToken 
              || SyntaxFacts.OperatorPrecedence(this.current.kind) == 1)
             {
                 var Operator = this.Advance();
-                var right = this.Term();
+                var right = this.ParseExpresAnd();
                 left = new BinaryExpression(left, Operator, right);
             }
 
 
             return left;
+        }
+
+        private Expres ParseExpresAnd() 
+        {
+            var left = this.Term();
+            while (this.current.kind == SyntaxKind.AmpersandAmpersandToken)
+            {
+                var Operator = this.Advance();
+                var right = this.Term();
+                left = new BinaryExpression(left, Operator, right);
+            }
+            return left ;
         }
         private Expres Term() 
         {

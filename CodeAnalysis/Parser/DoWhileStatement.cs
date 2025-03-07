@@ -8,12 +8,14 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 {
     internal class DoWhileStatement : Statement
     {
-        public DoWhileStatement(SyntaxToken DoKeyword,Statement Body, SyntaxToken WhileKeyword,Expres Condition ) 
+        public DoWhileStatement(SyntaxToken DoKeyword,Statement Block, SyntaxToken WhileKeyword, SyntaxToken OpenParaenthesis, Expres Condition , SyntaxToken ClosedParaenthesis) 
         {
             this.DoKeyword = DoKeyword;
-            this.Body = Body;
+            this.Block = Block;
             this.WhileKeyword = WhileKeyword;
+            this.OpenParaenthesis = OpenParaenthesis;
             this.Condition = Condition;
+            this.ClosedParaenthesis = ClosedParaenthesis;
         }
 
         public override T accept<T>(Visitor<T> visitor)
@@ -25,10 +27,12 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public SyntaxToken DoKeyword { get; }
 
-        public Statement Body { get; }
+        public Statement Block { get; }
 
         public SyntaxToken WhileKeyword { get; }
-
+        public SyntaxToken OpenParaenthesis { get; }
         public Expres Condition { get; }
+
+        public SyntaxToken ClosedParaenthesis { get; }
     }
 }

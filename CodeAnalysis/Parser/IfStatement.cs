@@ -8,12 +8,14 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 {
     internal class IfStatement : Statement
     {
-        public IfStatement(SyntaxToken OpenParaenthesis, Expres Condition, SyntaxToken ClosedParaenthesis, BlockStatement Body) 
+        public IfStatement(SyntaxToken If,SyntaxToken OpenParaenthesis, Expres Condition, SyntaxToken ClosedParaenthesis, BlockStatement Body,ElseStatement? Else = null) 
         {
+            this.IfKeyword = If;
             this.OpenParaenthesis = OpenParaenthesis;
             this.Condition = Condition;
             this.ClosedParaenthesis = ClosedParaenthesis;
             this.Body = Body;
+            this.OptionalElse = Else;
         }
 
         public override T accept<T>(Visitor<T> visitor)
@@ -24,6 +26,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public SyntaxKind NodeToken => SyntaxKind.IfStatement;
 
+        public SyntaxToken IfKeyword { get; }
         public SyntaxToken OpenParaenthesis { get; }
 
         public Expres Condition { get; }
@@ -32,6 +35,6 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public BlockStatement Body { get; }
 
-        public ElseStatement OptionalElse { get; }
+        public ElseStatement? OptionalElse { get; }
     }
 }

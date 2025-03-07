@@ -21,6 +21,8 @@ namespace Memo_Compiler.CodeAnalysis
         EqualEqualToken,
         PluseEqualToken,
         MinusEqualToken,
+        StarEqualToken,
+        SlashEqualToken,
         MinusToken,
         PlusToken,
         ExclamationToken,
@@ -58,6 +60,7 @@ namespace Memo_Compiler.CodeAnalysis
         NumberKeyword,
         StringKeyword,
         VoidKeyword,
+        UntilKeyword,
 
         
         BadToken,
