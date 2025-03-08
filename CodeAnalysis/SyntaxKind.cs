@@ -52,6 +52,7 @@ namespace Memo_Compiler.CodeAnalysis
         ReturnKeyword,
         BreakKeyword,
         LetKeyword,
+        VarKeyWord,
         ForKeyword,
         ToKeyword,
         FunctionKeyword,
@@ -88,11 +89,13 @@ namespace Memo_Compiler.CodeAnalysis
             BlockStatement, // block here is statement because it can stand alone that group statements 
             ElseStatement, // elsestatement here wraps over elseclause and block statement
             LocalVariableDeclerationStatement,
+            ImplicitVariableDecleration,
             ReturnStatement,
             //variable decleration
 
             VariavleDecleration,
             VariableDeclerator,
+            EqualClauseType,
 
             ParamSyntax,
             ReturnType

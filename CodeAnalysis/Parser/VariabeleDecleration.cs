@@ -11,6 +11,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
     {
         public VariabeleDecleration(SyntaxToken Keyword,ImmutableArray<BaseSyntax> arr ) 
         {
+            
             this.Keyword = Keyword;
             this.Declerators = new ArgumentsSyntaxList<BaseSyntax>(arr);
         }

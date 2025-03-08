@@ -96,6 +96,8 @@ namespace Memo_Compiler.CodeAnalysis.Parser
                     return ParseBlockStmt();
                 case SyntaxKind.FunctionKeyword:
                     return ParseFunctionDeclaration();
+                case SyntaxKind.ForKeyword:
+                    return ParseForStatement();
                 case SyntaxKind.ReturnKeyword:
                     return ParseReturnStatement();
                 case SyntaxKind.IfKeyword:
@@ -104,6 +106,11 @@ namespace Memo_Compiler.CodeAnalysis.Parser
                     return ParseWhileStatement();
                 case SyntaxKind.DoKeyword:
                    return ParseDoWhileStatement();
+                case SyntaxKind.VarKeyWord:
+                   return ParseImplicitlyVariable();
+                case SyntaxKind.NumberKeyword:
+                case SyntaxKind.StringKeyword:
+                   return ParseLocalVariableDeclaration();
                
                     default:
                    return ParseAssigmentExpression();
@@ -113,6 +120,56 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         }
 
+        private Statement ParseLocalVariableDeclaration() 
+        {
+            var key = this.current.kind == SyntaxKind.StringKeyword ? SyntaxKind.StringKeyword: SyntaxKind.NumberKeyword;
+            var KeyWord = this.MatchToken(key);
+            var VariableDecleration = ParseMultipleVariables(KeyWord);
+            var SemiColon = this.MatchToken(SyntaxKind.SemiColonToken);
+            return new LocalVariableDeclerationStatement(VariableDecleration,SemiColon);
+
+        }
+
+        private VariabeleDecleration ParseMultipleVariables(SyntaxToken key) 
+        {
+            
+            while(this.current.kind != SyntaxKind.EndOfFileToken || this.current.kind == SyntaxKind.SemiColonToken) 
+            {
+                var KeyWord = this.MatchToken(SyntaxKind.IdentifierToken);
+                
+                if (this.current.kind == SyntaxKind.EqualToken)
+                {
+                    var Equal = this.MatchToken(SyntaxKind.EqualToken);
+                    var Expres = this.ParseAssigmentExpression();
+                  var  equal = new EqualClause(Equal, Expres);
+                   var declerator = new VariableDeclerator(KeyWord, equal );
+                    this.pool.Add(declerator);
+                }
+                else 
+                {
+                    this.pool.Add(new VariableDeclerator(KeyWord));
+                }
+                if (!(this.current.kind == SyntaxKind.SingleComma))
+                {
+                    break;
+                }
+                var comma = this.MatchToken(SyntaxKind.SingleComma);
+                this.pool.Add(comma);
+
+            }
+            var VarDeclaration = new VariabeleDecleration(key, ImmutableArray.Create(this.pool._PooledArray));
+            this.pool.ReturnArr();
+            return VarDeclaration;
+        }
+        private Statement ParseImplicitlyVariable() 
+        {
+            
+            var VarKeyword = this.MatchToken(SyntaxKind.VarKeyWord);
+            var Identification = this.MatchToken(SyntaxKind.IdentifierToken);
+            var EqualToken = this.MatchToken(SyntaxKind.EqualToken);
+            var Expres = this.ParseAssigmentExpression();
+            return new ImplicitVariableDeclaration(VarKeyword, Identification, EqualToken, Expres);
+        }
         private Statement ParseWhileStatement() 
         {
             var WhileKeyword = this.MatchToken(SyntaxKind.WhileKeyword);
@@ -377,7 +434,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         private ImmutableArray<BaseSyntax> ParseParametersandArguments() 
         {
-            var temp = pool.PoolRent(8);
+             pool.PoolRent(8);
             var Continue = true;
             while (Continue && current.kind != SyntaxKind.ClosedParanthesis || current.kind != SyntaxKind.EndOfFileToken)
             {
@@ -394,14 +451,14 @@ namespace Memo_Compiler.CodeAnalysis.Parser
                 }
             }
 
-            var arr = ImmutableArray.ToImmutableArray(temp);
+            var arr = ImmutableArray.ToImmutableArray(this.pool._PooledArray);
             pool.ReturnArr();
             return arr;
         }
 
         private ImmutableArray<BaseSyntax> ParseParameters() 
         {
-            var temp =pool.PoolRent(8);
+            pool.PoolRent(8);
             var Continue = true;
             while (Continue ||current.kind == SyntaxKind.EndOfFileToken || current.kind == SyntaxKind.ClosedParanthesis) 
             {
@@ -419,7 +476,7 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
             }
 
-            var arr = ImmutableArray.ToImmutableArray(temp);
+            var arr = ImmutableArray.ToImmutableArray(this.pool._PooledArray);
             pool.ReturnArr();
             return arr;
 

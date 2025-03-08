@@ -77,6 +77,10 @@ namespace Memo_Compiler.CodeAnalysis
                     return SyntaxKind.StringKeyword;
                 case "void":
                     return SyntaxKind.VoidKeyword;
+                case "until":
+                    return SyntaxKind.UntilKeyword;
+                case "var":
+                    return SyntaxKind.VarKeyWord;
 
                 default:
                     return SyntaxKind.IdentifierToken;

@@ -8,19 +8,16 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 {
     internal class VariableDeclerator : BaseSyntax
     {
-        public VariableDeclerator(SyntaxToken Identifier, SyntaxToken? EqualToken, Expres? Expression) 
+        public VariableDeclerator(SyntaxToken Identifier, EqualClause? EqualClause = null) 
         {
             this.Identifier = Identifier;
-            this.EqualToken = EqualToken;
-            this.Expression = Expression;
+           this.EqualClause = EqualClause;
         }
 
         public SyntaxKind NodeToken => SyntaxKind.VariableDeclerator;
 
         public SyntaxToken Identifier { get; }
 
-        public SyntaxToken? EqualToken {  get; }
-
-        public Expres? Expression { get; }
+       public EqualClause? EqualClause { get; }
     }
 }

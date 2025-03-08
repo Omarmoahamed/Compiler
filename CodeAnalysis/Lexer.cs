@@ -85,6 +85,15 @@ namespace Memo_Compiler.CodeAnalysis
                     position++;
                     kind = SyntaxKind.ClosedParanthesis;
                     break;
+                case '|' when Peek(1) == '|':
+                    position += 2;
+                    kind = SyntaxKind.PipePipeToken;
+                    break;
+
+                case '&' when Peek(1) == '&':
+                    position+=2;
+                    kind = SyntaxKind.AmpersandAmpersandToken;
+                    break;
                 case '"':
 
                     position++;

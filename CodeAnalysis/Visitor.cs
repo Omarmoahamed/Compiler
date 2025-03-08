@@ -32,5 +32,7 @@ namespace Memo_Compiler.CodeAnalysis
 
         T VisitFunctionStatement(FunctionDeclerationStatement FunctionStmt);
         T VisitLocalDeclarationStatemenrt(LocalVariableDeclerationStatement LocalDeclerationStmt);
+
+        T VisitImplicitDeclarationStatemenrt(ImplicitVariableDeclaration ImplicitDeclerationStmt);
     }
 }
