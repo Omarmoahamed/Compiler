@@ -67,7 +67,13 @@ namespace Memo_Compiler.CodeAnalysis.Parser
             pool.ReturnArr();
         }
 
-        public ImmutableArray<BaseSyntax> ParseSyntaxTokens() 
+        public CompilationUnitSyntax ParseCompilation() 
+        {
+            var members = ParseSyntaxTokens();
+            var eof = this.MatchToken(SyntaxKind.EndOfFileToken);
+            return new CompilationUnitSyntax(members, eof);
+        }
+        private ImmutableArray<BaseSyntax> ParseSyntaxTokens() 
         {
             pool.PoolRent(16);
             while (this.current.kind != SyntaxKind.EndOfFileToken) 
@@ -85,9 +91,9 @@ namespace Memo_Compiler.CodeAnalysis.Parser
          
         private BaseSyntax ParseSyntaxToken() 
         {
-
+            return ParseStatement();
         }
-
+        
         private BaseSyntax ParseStatement() 
         {
             switch (this.current.kind) 

@@ -36,7 +36,7 @@ namespace Memo_Compiler
                 this.ArrPropStack.Push((count, length, PooledArray));
             }
             PooledArray = A_pool.Rent(minimum);
-
+            this.count = 0;
             this.length = PooledArray.Length;
             return PooledArray;
 
@@ -92,6 +92,7 @@ namespace Memo_Compiler
                 this.A_pool.Return(PooledArray, false);
                 PooledArray = null;
                 length = 0;
+                count = 0;
             }
         }
     }

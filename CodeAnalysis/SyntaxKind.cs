@@ -98,6 +98,9 @@ namespace Memo_Compiler.CodeAnalysis
             EqualClauseType,
 
             ParamSyntax,
-            ReturnType
+            ReturnType,
+
+
+            CompilationUnit
     }
 }
