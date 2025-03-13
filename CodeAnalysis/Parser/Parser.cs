@@ -91,7 +91,9 @@ namespace Memo_Compiler.CodeAnalysis.Parser
          
         private BaseSyntax ParseSyntaxToken() 
         {
-            return ParseStatement();
+            var stmt =(Statement) ParseStatement();
+            var GlobalStmt = new GlobalStatement(stmt);
+            return GlobalStmt;
         }
         
         private BaseSyntax ParseStatement() 
@@ -119,13 +121,19 @@ namespace Memo_Compiler.CodeAnalysis.Parser
                    return ParseLocalVariableDeclaration();
                
                     default:
-                   return ParseAssigmentExpression();
+                   return ParseStatementExpres();
                 
 
             }
 
         }
 
+        private Statement ParseStatementExpres() 
+        {
+            var Expres = ParseAssigmentExpression();
+            var StmtExpres = new StatementExpression(Expres);
+            return StmtExpres;
+        }
         private Statement ParseLocalVariableDeclaration() 
         {
             var key = this.current.kind == SyntaxKind.StringKeyword ? SyntaxKind.StringKeyword: SyntaxKind.NumberKeyword;

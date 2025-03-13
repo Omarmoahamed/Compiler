@@ -78,7 +78,8 @@ namespace Memo_Compiler.CodeAnalysis
 
 
             //Statement
-
+            GlobalStatement,
+            StatementExpression,
             IfStatement,
             WhileStatement,
             DoWhileStatement,
