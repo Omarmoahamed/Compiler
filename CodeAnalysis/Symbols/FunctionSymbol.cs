@@ -11,16 +11,26 @@ namespace Memo_Compiler.CodeAnalysis.Symbols
     internal class FunctionSymbol : Symbol
     {
 
-        public FunctionSymbol(string name,FunctionDeclerationStatement stmt,ImmutableArray<TypeSymbol> Parameters) : base(name) 
+        public FunctionSymbol(string name,TypeSymbol Type,FunctionDeclerationStatement stmt,ImmutableArray<ParameterSymbol> Parameters) : base(name) 
         {
             this.stmt = stmt;
             this.Parameters = Parameters;
+            this.Type = Type;
+            if(Type.Name == "void") 
+            {
+                IsVoid = true;
+            }
+
+            IsVoid = false;
         }
 
 
         public override SymbolKind Kind => SymbolKind.FunctionSymbol;
 
-        public ImmutableArray<TypeSymbol> Parameters { get; }
+        public ImmutableArray<ParameterSymbol> Parameters { get; }
         public FunctionDeclerationStatement stmt { get; }
+        public TypeSymbol Type { get; } 
+
+        public bool IsVoid { get; }
     }
 }
