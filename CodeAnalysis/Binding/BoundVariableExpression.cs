@@ -9,7 +9,7 @@ namespace Memo_Compiler.CodeAnalysis.Binding
 {
     internal class BoundVariableExpression : BoundExpression
     {
-        public BoundVariableExpression(SyntaxToken syntax,VariableSymbol variable) : base(syntax) 
+        public BoundVariableExpression(SyntaxNode syntax,VariableSymbol variable) : base(syntax) 
         {
             this.Variable = variable;
             this.Type = variable.TypeSymbol;

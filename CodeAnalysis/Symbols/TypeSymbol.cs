@@ -8,7 +8,8 @@ namespace Memo_Compiler.CodeAnalysis.Symbols
 {
     internal class TypeSymbol : Symbol
     {
-        public  TypeSymbol(string name, TypeKind typeKind) : base(name)
+        
+        private  TypeSymbol(string name, TypeKind typeKind) : base(name)
         {
             TypeKind = typeKind;
         }
@@ -33,6 +34,29 @@ namespace Memo_Compiler.CodeAnalysis.Symbols
                     return new TypeSymbol("void",TypeKind.Void);
                 default:
                    return new TypeSymbol("error",TypeKind.Error);
+            }
+        }
+
+        public static TypeSymbol CreateType(SyntaxKind kind,TypeKind tkind) 
+        {
+
+            return new TypeSymbol(GetName(kind), tkind);
+        }
+
+        private static string GetName(SyntaxKind kind,TypeKind? tkind = null) 
+        {
+            switch (kind) 
+            {
+                case SyntaxKind.NumberKeyword:
+                
+                    return "number";
+                case SyntaxKind.StringKeyword:
+                    return "string";
+
+                case SyntaxKind.TrueKeyword:
+                    return "bool";
+                default:
+                    return "error";
             }
         }
     }

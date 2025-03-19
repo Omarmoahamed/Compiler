@@ -8,12 +8,12 @@ namespace Memo_Compiler.CodeAnalysis.Binding
 {
     internal abstract class BoundNode
     {
-        public BoundNode(SyntaxToken syntaxToken)
+        public BoundNode(SyntaxNode syntaxToken)
         {
             SyntaxToken = syntaxToken;
         }
 
         public abstract BoundKind Kind { get; }
-        public SyntaxToken SyntaxToken { get; }
+        public SyntaxNode SyntaxToken { get; }
     }
 }

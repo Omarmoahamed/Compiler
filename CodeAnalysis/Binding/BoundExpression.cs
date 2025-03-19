@@ -9,7 +9,7 @@ namespace Memo_Compiler.CodeAnalysis.Binding
 {
     internal abstract class BoundExpression : BoundNode
     {
-        public BoundExpression(SyntaxToken syntax): base(syntax) 
+        public BoundExpression(SyntaxNode syntax): base(syntax) 
         {
 
         }

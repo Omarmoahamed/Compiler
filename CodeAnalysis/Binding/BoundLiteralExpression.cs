@@ -10,7 +10,7 @@ namespace Memo_Compiler.CodeAnalysis.Binding
     internal class BoundLiteralExpression : BoundExpression
     {
 
-        public BoundLiteralExpression(SyntaxToken token,TypeSymbol type) : base(token) 
+        public BoundLiteralExpression(SyntaxNode token,TypeSymbol type) : base(token) 
         {
             this.Type = type;
         }
