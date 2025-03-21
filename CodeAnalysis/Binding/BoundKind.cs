@@ -8,12 +8,21 @@ namespace Memo_Compiler.CodeAnalysis.Binding
 {
     internal enum BoundKind
     {
+        //Expression
         LiteralExpression,
         CallExpression,
         BinaryExpression,
         AssigmentExpression,
         AssigmentCompoundExpression,
         UnaryExpression,
-        VariableExpression
+        VariableExpression,
+
+        //Statement
+
+        IfStatement,
+        BlockStatement,
+        ForStatement,
+        WhileStatement,
+        DoWhileStatement
     }
 }
