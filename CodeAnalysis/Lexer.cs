@@ -94,6 +94,42 @@ namespace Memo_Compiler.CodeAnalysis
                     position+=2;
                     kind = SyntaxKind.AmpersandAmpersandToken;
                     break;
+                case '+':
+                    if(this.CheckCompundAssigment(this.Current)) 
+                    {
+                       
+                        break;
+                    }
+                    position++;
+                    kind= SyntaxKind.PlusToken;
+                    break;
+                case '-':
+                    if (this.CheckCompundAssigment(this.Current))
+                    {
+
+                        break;
+                    }
+                    position++;
+                    kind = SyntaxKind.MinusToken;
+                    break;
+                case '*':
+                    if (this.CheckCompundAssigment(this.Current))
+                    {
+
+                        break;
+                    }
+                    position++;
+                    kind = SyntaxKind.StarToken;
+                    break;
+                case '/':
+                    if (this.CheckCompundAssigment(this.Current))
+                    {
+
+                        break;
+                    }
+                    position++;
+                    kind = SyntaxKind.SlashToken;
+                    break;
                 case '"':
 
                     position++;
@@ -277,6 +313,35 @@ namespace Memo_Compiler.CodeAnalysis
 
         }
 
+        private bool CheckCompundAssigment(char c) 
+        {
+           
+          
+            if(Peek(1) == '=') 
+            {
+                position += 2;
+                switch (c) 
+                {
+                    case '+':
+                        kind = SyntaxKind.PluseEqualToken;
+                        return true;
+                    case '-':
+                        kind = SyntaxKind.MinusEqualToken;
+                        return true;
+                    case '*':
+                        kind=SyntaxKind.StarEqualToken;
+                        return true;
+                    case '/':
+                        kind=SyntaxKind.SlashEqualToken;
+                        return true;
+                    default:
+                        return false;
+                }
+                
+            }
+
+            return false;
+        }
         private void ReadIdentifierOrKeyWord() 
         {
 

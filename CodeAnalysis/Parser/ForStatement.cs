@@ -23,6 +23,8 @@ namespace Memo_Compiler.CodeAnalysis.Parser
 
         public override T accept<T>(Visitor<T> visitor)
         {
+           
+           
              
             return visitor.VisitForStatement(this);
         }

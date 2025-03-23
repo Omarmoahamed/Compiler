@@ -23,6 +23,7 @@ namespace Memo_Compiler.CodeAnalysis.Binding
         BlockStatement,
         ForStatement,
         WhileStatement,
-        DoWhileStatement
+        DoWhileStatement,
+        VariableDecleration
     }
 }
