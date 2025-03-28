@@ -9,7 +9,7 @@ namespace Memo_Compiler.CodeAnalysis.Binding
 {
     internal class BoundVariableDecleration : BoundStatement
     {
-        public BoundVariableDecleration(SyntaxNode syntax,VariableSymbol Variable,BoundExpression Initializer): base(syntax) 
+        public BoundVariableDecleration(SyntaxNode syntax,VariableSymbol Variable,BoundExpression? Initializer): base(syntax) 
         {
             this.Variable = Variable;
             this.Initializer = Initializer;
